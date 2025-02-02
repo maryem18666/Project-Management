@@ -1,0 +1,45 @@
+/* Fond de la barre de navigation */
+.custom-navbar {
+    background-color: #1b1374; /* Bleu-gris foncé */
+    box-shadow: 0 4px 6px rgba(145, 132, 132, 0.1); /* Ombre douce */
+  }
+  
+  /* Style du logo */
+  .custom-navbar .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #f2f5f7; /* Blanc */
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .custom-navbar .navbar-brand:hover {
+    color: #c9a356; /* Jaune doré */
+  }
+  
+  /* Style des liens de navigation */
+  .custom-navbar .nav-link {
+    font-size: 1rem;
+    color: #ffffff; /* Gris clair */
+    margin-left: 10px;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .custom-navbar .nav-link:hover {
+    color: #f8f9fa; /* Blanc */
+  }
+  
+  /* Bouton de déconnexion */
+  .logout-btn {
+    background-color: #b0222e; /* Rouge vif */
+    color: #fff; /* Blanc */
+    font-weight: bold;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .logout-btn:hover {
+    background-color: #d62839; /* Rouge foncé */
+  }
+  

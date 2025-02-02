@@ -1,0 +1,54 @@
+/* sidebar.css */
+
+/* Background gradient and shadow for the sidebar */
+.sidebar {
+  background: linear-gradient(135deg, #753a3a, #192851); /* Un joli dégradé bleu foncé */
+  box-shadow: 4px 0 10px rgba(247, 10, 10, 0.837);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Title Style */
+h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #2b2684;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+}
+
+/* Navigation Links Style */
+.nav-link {
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect for nav items */
+.nav-link:hover {
+  background-color: #201773; /* Jaune doré */
+  transform: scale(1.05); /* Effet de zoom léger au survol */
+  color: #5e1c4e; /* Change la couleur du texte lors du survol */
+}
+
+/* Icon Styles */
+.nav-link .me-2 {
+  font-size: 1.4rem;
+}
+
+/* Customizing the active link */
+.nav-item.active .nav-link {
+  background-color: #4b33d6;
+  color: #fff;
+}
+
+/* Add rounded corners to the sidebar */
+.sidebar {
+  border-radius: 15px;
+}

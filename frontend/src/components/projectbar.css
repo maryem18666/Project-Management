@@ -1,0 +1,22 @@
+/* styles.css */
+
+/* Personnalisation des couleurs des boutons */
+.btn-custom-primary {
+    background-color: #5d7dde; 
+    color: white;
+  }
+  
+  .btn-custom-warning {
+    background-color: #6ab623; 
+    color: white;
+  }
+  
+  .btn-custom-info {
+    background-color: #1cbee7; 
+    color: white;
+  }
+  
+  .btn-custom:hover {
+    opacity: 0.8; /* Effet d'ombre lors du survol */
+  }
+  

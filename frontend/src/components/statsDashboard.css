@@ -1,0 +1,47 @@
+/* statsDashboard.css */
+
+/* Card Styles */
+.card {
+    border-radius: 10px;
+    background-color: #dfe8f2;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: scale(1.05); /* Légère augmentation de la taille de la carte au survol */
+    box-shadow: 0 4px 12px rgba(28, 12, 76, 0.1); /* Ombre plus prononcée au survol */
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1f258c;
+  }
+  
+  .card-text {
+    font-size: 1.2rem;
+    color: #4e2222;
+  }
+  
+  /* Icon Style */
+  .display-4 {
+    font-size: 3rem;
+    color: #464c95; /* Couleur des icônes */
+  }
+  
+  /* Customizing the row */
+  .row {
+    margin-top: 20px;
+  }
+  
+  /* Header styles */
+  h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ad7474;
+  }
+  
