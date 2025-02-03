@@ -1,28 +1,29 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Home from "./components/Home";
-import Header from "./components/Header";
-import Dash from "./components/HomeUser";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import Dashboard from "./components/Dashboard";
-import ProjectList from "./components/ProjectList";
-import AddProject from "./components/AddProject";
-import UpdateProject from "./components/UpdateProject";
-import Settings from "./components/Settings";
-import Profile from "./components/profile";
-import AddTask from "./components/AddTask";
-import Tasks from './components/tasktotal';
-import TasksTable from './components/TasksTable';
-import Notes from "./components/Note";
-import Clients from "./components/Client";
-import AddClient from "./components/AddClient";
-import Messages from "./components/Message";
 
-import Projectbar from "./components/Projectbar";
+import AddClient from "./components/AddClient";
+import AddProject from "./components/AddProject";
+import AddTask from "./components/AddTask";
+import Clients from "./components/Client";
+import Dashboard from "./components/Dashboard";
+import DashboradEmloyee from "./components/DashboradEmloyee";
+import Footer from "./components/Footer";
 import Gamification from "./components/Gamification";
+import Header from "./components/Header";
+import Home from "./components/Home";
+import Dash from "./components/HomeUser";
+import Login from "./components/Login";
+import Messages from "./components/Message";
+import Navbar from "./components/Navbar";
+import Notes from "./components/Note";
+import Profile from "./components/profile";
+import Projectbar from "./components/Projectbar";
+import ProjectList from "./components/ProjectList";
+import Register from "./components/Register";
+import Settings from "./components/Settings";
+import TasksTable from './components/TasksTable';
+import Tasks from './components/tasktotal';
+import UpdateProject from "./components/UpdateProject";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/Dash" element={<Dash />} />
+          <Route path="/DashEmployee" element={<DashboradEmloyee />} />
           <Route path="/Header" element={<Header />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/projects" element={<ProjectList />} />

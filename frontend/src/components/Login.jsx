@@ -1,23 +1,39 @@
 import React, { useState } from "react";
-import API from "../services/api";
+import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+
+import API from "../services/api";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
-  console.log('form', form);
+  console.log("form", form);
   const navigate = useNavigate();
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await API.post("/login",form);
-      console.log(res,"test");
-      localStorage.setItem("token", res.data.token);
+      const res = await API.post("/login", form);
+      const token = res.data.mytoken; // Assurez-vous que le token est bien dans res.data.mytoken
+
+      // Décoder le token pour obtenir les informations de l'utilisateur
+      const decodedToken = jwtDecode(token); // Utilisez jwtDecode ici
+      console.log("🚀 ~ handleSubmit ~ decodedToken:", decodedToken);
+      const userRole = decodedToken.role; // Récupérer le rôle de l'utilisateur
+      console.log("🚀 ~ handleSubmit ~ userRole:", userRole);
+
+      console.log("Rôle de l'utilisateur:", userRole);
+
+      // Stocker le token dans le localStorage
+      localStorage.setItem("token", token);
+
       alert("Connexion réussie !");
-      navigate("/Dash");
+      if (userRole === "admin") {
+        navigate("/Dash");
+      } else if (userRole === "user") {
+        navigate("/DashEmployee");
+      }
+      // navigate("/Dash");
     } catch (error) {
-  
       alert("Erreur lors de la connexion");
     }
   };
@@ -28,13 +44,12 @@ function Login() {
         className="col-lg-6 col-md-6 d-flex justify-content-center align-items-center"
         style={{
           backgroundImage: "url('card3.c37960dc60ab32444a21dcb428471895.svg')", // Remplacez par l'URL de votre image
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          height: '100%',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "100%",
         }}
-      >
-      </div>
-  
+      ></div>
+
       {/* Formulaire à droite */}
       <div className="col-lg-6 col-md-6 d-flex justify-content-center align-items-center bg-light">
         <div className="w-75">
@@ -68,8 +83,6 @@ function Login() {
       </div>
     </div>
   );
-  
-  
-};
+}
 
 export default Login;

@@ -1,10 +1,12 @@
 import React from "react";
 import { FaTasks, FaProjectDiagram, FaStickyNote, FaUsers, FaEnvelope, FaCogs } from "react-icons/fa";
 import { Link } from "react-router-dom";
+
 import './sidebar.css' ;
+
 const Sidebar = () => {
   return (
-    <div className="d-flex flex-column sidebar vh-100 p-3 shadow-lg">
+    <div className="d-flex flex-column sidebar  p-3 shadow-lg">
       <h2 className="text-center mb-4">Managem</h2>
       <ul className="nav flex-column">
         <li className="nav-item mb-3">

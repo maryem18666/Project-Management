@@ -1,8 +1,9 @@
+
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const User = require("./models/signup");
-const projectRoutes = require("./routes/projectRoutes"); 
+const projectRoutes = require("./routes/projectRoutes");
 const clientRoutes = require("./routes/clientRoutes");
 const messagesRoutes = require("./routes/messages");
 const taskRoutes = require("./routes/taskRoutes");
@@ -44,7 +45,7 @@ app.use(express.json());
 app.use("/projects", projectRoutes);
 app.use("/clients", clientRoutes);
 app.use("/messages", messagesRoutes);
-app.use("/taskstotal", taskRoutes); 
+app.use("/taskstotal", taskRoutes);
 
 app.post("/register", async (req, res) => {
   try {
@@ -89,6 +90,7 @@ app.post("/login", async (req, res) => {
       _id: user._id,
       email: user.email,
       name: user.name,
+      role: user.role,
     };
 
     // Générer un token JWT
@@ -130,9 +132,6 @@ app.get("/getall", (req, res) => {
 app.put("/update", (req, res) => {
   console.log("update work");
 });
-
-
-
 
 app.listen(3000, () => {
   console.log("server work");

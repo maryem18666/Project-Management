@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import API from "../services/api";
 import { useNavigate } from "react-router-dom";
+
+import API from "../services/api";
 
 function Register() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  console.log("🚀 ~ Register ~ form:", form)
   const navigate = useNavigate();
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -84,7 +86,7 @@ function Register() {
             value={form.role}
             onChange={handleChange}
           >
-            <option value="user">Utilisateur</option>
+            <option value="employee">Employee</option>
             <option value="admin">Administrateur</option>
             
           </select>
