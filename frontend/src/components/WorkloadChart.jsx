@@ -22,34 +22,35 @@ const WorkloadChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Récupérer les utilisateurs
-        const userResponse = await API.get("/getall");
-        setUsers(userResponse.data);
+        const userResponse = await API.get("/getall"); 
+        const projectResponse = await API.get("/projects"); 
   
-        // Récupérer les projets
-        const response = await API.get("/projects");
-        const allTasks = response.data.flatMap(project => project.tasks);
+        const allUsers = userResponse.data || [];  
+        setUsers(allUsers); 
   
-        console.log("Tâches récupérées depuis l'API :", allTasks);
-  
+        const allTasks = projectResponse.data.flatMap(project => project.tasks);
+        
         // Associer chaque tâche à son utilisateur
         const tasksWithUsers = allTasks.map(task => {
-          const user = users.find(user => user._id === task.assignedTo?._id);
+          if (!task.assignedTo) return task; // Vérifier si `assignedTo` existe
+          const user = allUsers.find(user => user._id === task.assignedTo._id);
           return user ? { ...task, assignedTo: user.email } : task;
         });
+        
   
-        console.log("Tâches associées aux utilisateurs :", tasksWithUsers);
         setTasks(tasksWithUsers);
-        setLoading(false);
       } catch (error) {
-        console.error("Erreur lors du chargement des tâches :", error);
-        setError("Erreur de chargement des données.");
+        console.error("Erreur lors du chargement des données :", error.message || error);
+
+        setError("Erreur de chargement.");
+      } finally {
         setLoading(false);
       }
     };
   
     fetchData();
-  }, [users]); // L'effet dépend de `users`
+  }, [API]); 
+  
   if (loading) {
     return <p>Chargement des tâches...</p>;
   }

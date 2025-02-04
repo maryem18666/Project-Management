@@ -6,7 +6,8 @@ const MessageItem = ({ message, users, onMarkAsRead }) => {
 
   useEffect(() => {
     // Trouver l'utilisateur correspondant à senderId dans la liste des utilisateurs
-    const foundSender = users.find((user) => user._id === message.senderId);
+    const foundSender = Array.isArray(users) ? users.find((user) => user._id === message.senderId) : null;
+
     if (foundSender) {
       setSender(foundSender);
     }

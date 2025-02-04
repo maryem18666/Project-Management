@@ -24,7 +24,7 @@ const SendMessage = ({ setMessages, socket, users, userId }) => {
       // Ajoute le message à l'état local
       setMessages((prevMessages) => [newMessage, ...prevMessages]);
       setMessage(""); // Réinitialise le champ du message
-      setRecipientId(""); // Réinitialise le destinataire sélectionné
+      
     } else {
       console.error("Veuillez remplir tous les champs.");
     }

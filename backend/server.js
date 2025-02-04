@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const User = require("./models/signup");
+const Client=require("./models/client");
 const projectRoutes = require("./routes/projectRoutes");
 const clientRoutes = require("./routes/clientRoutes");
 const messagesRoutes = require("./routes/messages");
@@ -14,7 +15,7 @@ const jwt = require("jsonwebtoken");
 const http = require("http");
 const socketIo = require("socket.io");
 
-const nodemailer = require("nodemailer");
+/*const nodemailer = require("nodemailer");
 
 // Configuration de Nodemailer
 const transporter = nodemailer.createTransport({
@@ -23,28 +24,51 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER, // Ton email
     pass: process.env.EMAIL_PASS, // Ton mot de passe (ou app password)
   },
-});
+});*/
 
 const app = express();
 
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:3000", 
+    methods: ["GET", "POST"],
+  },
+});
+
+app.set("socketio", io);
 io.on("connection", (socket) => {
-  console.log("Un utilisateur est connecté");
+  console.log("Un utilisateur s'est connecté");
+
+  // Vérifier le token JWT lors de la connexion
+  socket.on("authenticate", (token) => {
+    if (!process.env.JWT_SECRET) {
+      console.error("JWT_SECRET non défini !");
+      return socket.disconnect();
+    }
+    
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      socket.user = { id: decoded._id, email: decoded.email }; // Ne stocker que des infos nécessaires
+      console.log("Utilisateur authentifié :", decoded.email);
+    } catch (error) {
+      console.error("Échec de l'authentification WebSocket :", error.message);
+      socket.disconnect();
+    }
+  });
+  
 
   socket.on("sendMessage", (message) => {
-    // Traite l'envoi de message
-    console.log(message);
-    // Émet le message aux autres utilisateurs
-    socket.broadcast.emit("receiveMessage", message);
+    if (!socket.user) return; // Vérifier si l'utilisateur est authentifié
+
+    console.log("Message reçu :", message);
+    socket.broadcast.emit("receiveMessage", { user: socket.user.email, text: message });
   });
 
   socket.on("disconnect", () => {
     console.log("Un utilisateur s'est déconnecté");
   });
 });
-// Rendre `io` accessible dans l'application
-app.set("socketio", io);
 
 app.use(cors());
 require("./config/connect");
@@ -104,9 +128,16 @@ app.post("/login", async (req, res) => {
 
     // Générer un token JWT
     // const token = jwt.sign(payload, "123456", { expiresIn: "1h" }); // Durée de validité du token : 1 heure
-    const token = jwt.sign(payload, process.env.JWT_SECRET || "123456", {
+    /*const token = jwt.sign(payload, process.env.JWT_SECRET || "123456", {
       expiresIn: "1h", // Durée de validité du token : 1 heure
-    });
+    });*/
+    const jwtSecret = process.env.JWT_SECRET;
+if (!jwtSecret) {
+  throw new Error("JWT_SECRET est manquant dans les variables d'environnement !");
+}
+
+const token = jwt.sign(payload, jwtSecret, { expiresIn: "1h" });
+
 
     // Répondre avec le token
     res.status(200).send({ mytoken: token });
@@ -129,18 +160,24 @@ app.post("/create", async (req, res) => {
 
 app.get("/getall", async (req, res) => {
   try {
-    const users = await User.find({}, "_id name"); // Récupère uniquement `_id` et `username` des utilisateurs
-    const clients = await Client.find({}, "_id name"); // Récupère `_id` et `username` des clients
+    console.log("Requête reçue sur /getall");
+    
+    const users = await User.find({}, "_id name email");
+    console.log("Utilisateurs récupérés :", users);
 
-    const allUsers = [...users, ...clients]; // Fusionne les deux tableaux
+    const clients = await Client.find({}, "_id name email");
+    console.log("Clients récupérés :", clients);
 
-    res.json(allUsers); // Envoie la liste complète
-    console.log("getall work");
+    const allUsers = [...users, ...clients];
+
+    res.json(allUsers);
+    console.log("Réponse envoyée avec succès !");
   } catch (err) {
     console.error("Erreur lors de la récupération des utilisateurs et clients:", err);
-    res.status(500).send(err);
+    res.status(500).json({ message: "Erreur serveur", error: err.message });
   }
 });
+
 
 /*app.get("/getall", (req, res) => {
   User.find()
@@ -157,6 +194,10 @@ app.put("/update", (req, res) => {
   console.log("update work");
 });
 
-app.listen(3000, () => {
-  console.log("server work");
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`✅ Serveur WebSocket démarré sur http://localhost:${PORT}`);
 });
+/*app.listen(3000, () => {
+  console.log("server work");
+});*/
