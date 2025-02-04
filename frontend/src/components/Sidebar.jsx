@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 
 import './sidebar.css' ;
 
-const Sidebar = () => {
+
+
+const Sidebar = ({ role }) => {
   return (
     <div className="d-flex flex-column sidebar  p-3 shadow-lg">
       <h2 className="text-center mb-4">Managem</h2>
@@ -13,30 +15,44 @@ const Sidebar = () => {
             <FaTasks className="me-2" />
             Tableau de bord
         </li>
+
         <li className="nav-item mb-3">
           <Link to="/projectsbar" className="nav-link text-white d-flex align-items-center">
             <FaProjectDiagram className="me-2" />
             Projets
           </Link>
         </li>
+        
+        {role === "user" && (
+          
         <li className="nav-item mb-3">
           <Link to="/AddTask" className="nav-link text-white d-flex align-items-center">
             <FaTasks className="me-2" />
             Taches
           </Link>
         </li>
+        
+        )}
+
         <li className="nav-item mb-3">
           <Link to="/Note" className="nav-link text-white d-flex align-items-center">
             <FaStickyNote className="me-2" />
             Mes Notes
           </Link>
         </li>
-        <li className="nav-item mb-3">
-          <Link to="/clients" className="nav-link text-white d-flex align-items-center">
-            <FaUsers className="me-2" />
-            Clients
-          </Link>
-        </li>
+        
+
+        {role === "admin" && (
+          <>
+            <li className="nav-item mb-3">
+              <Link to="/clients" className="nav-link text-white d-flex align-items-center">
+                <FaUsers className="me-2" />
+                Clients
+              </Link>
+            </li>
+          </>
+        )}
+
         <li className="nav-item mb-3">
           <Link to="/messages" className="nav-link text-white d-flex align-items-center">
             <FaEnvelope className="me-2" />

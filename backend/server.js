@@ -9,10 +9,10 @@ const messagesRoutes = require("./routes/messages");
 const taskRoutes = require("./routes/taskRoutes");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const app = express();
-/*
+/*const app = express();*/
+
 const http = require("http");
-const { Server } = require("socket.io");
+const socketIo = require("socket.io");
 
 const nodemailer = require("nodemailer");
 
@@ -28,15 +28,24 @@ const transporter = nodemailer.createTransport({
 const app = express();
 
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000", // URL du frontend
-    methods: ["GET", "POST"]
-  }
+const io = socketIo(server);
+io.on("connection", (socket) => {
+  console.log("Un utilisateur est connecté");
+
+  socket.on("sendMessage", (message) => {
+    // Traite l'envoi de message
+    console.log(message);
+    // Émet le message aux autres utilisateurs
+    socket.broadcast.emit("receiveMessage", message);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Un utilisateur s'est déconnecté");
+  });
 });
 // Rendre `io` accessible dans l'application
 app.set("socketio", io);
-*/
+
 app.use(cors());
 require("./config/connect");
 
@@ -118,7 +127,22 @@ app.post("/create", async (req, res) => {
   }
 });
 
-app.get("/getall", (req, res) => {
+app.get("/getall", async (req, res) => {
+  try {
+    const users = await User.find({}, "_id name"); // Récupère uniquement `_id` et `username` des utilisateurs
+    const clients = await Client.find({}, "_id name"); // Récupère `_id` et `username` des clients
+
+    const allUsers = [...users, ...clients]; // Fusionne les deux tableaux
+
+    res.json(allUsers); // Envoie la liste complète
+    console.log("getall work");
+  } catch (err) {
+    console.error("Erreur lors de la récupération des utilisateurs et clients:", err);
+    res.status(500).send(err);
+  }
+});
+
+/*app.get("/getall", (req, res) => {
   User.find()
     .then((users) => {
       res.send(users);
@@ -127,7 +151,7 @@ app.get("/getall", (req, res) => {
       res.send(err);
     });
   console.log("getall work");
-});
+});*/
 
 app.put("/update", (req, res) => {
   console.log("update work");
