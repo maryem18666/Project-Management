@@ -128,16 +128,10 @@ app.post("/login", async (req, res) => {
 
     // Générer un token JWT
     // const token = jwt.sign(payload, "123456", { expiresIn: "1h" }); // Durée de validité du token : 1 heure
-    /*const token = jwt.sign(payload, process.env.JWT_SECRET || "123456", {
+    const token = jwt.sign(payload, process.env.JWT_SECRET || "123456", {
       expiresIn: "1h", // Durée de validité du token : 1 heure
-    });*/
-    const jwtSecret = process.env.JWT_SECRET;
-if (!jwtSecret) {
-  throw new Error("JWT_SECRET est manquant dans les variables d'environnement !");
-}
-
-const token = jwt.sign(payload, jwtSecret, { expiresIn: "1h" });
-
+    });
+ 
 
     // Répondre avec le token
     res.status(200).send({ mytoken: token });
@@ -194,10 +188,6 @@ app.put("/update", (req, res) => {
   console.log("update work");
 });
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`✅ Serveur WebSocket démarré sur http://localhost:${PORT}`);
-});
-/*app.listen(3000, () => {
+app.listen(3000, () => {
   console.log("server work");
-});*/
+});
