@@ -1,45 +1,56 @@
 import React, { useState } from "react";
 
-const SendMessage = ({ setMessages, socket, users }) => {
+const SendMessage = ({ setMessages, socket, users, userId }) => {
   const [message, setMessage] = useState("");
-  const [recipientId, setRecipientId] = useState(""); // ID de l'utilisateur destinataire
+  const [recipientId, setRecipientId] = useState(""); // ID du destinataire
 
   // Fonction pour envoyer un message
   const sendMessage = () => {
     if (message.trim() && recipientId) {
       const newMessage = {
-        id: Date.now(), // Générer un ID unique pour chaque message
-        sender: "User", // Peut être dynamique selon l'utilisateur connecté
-        recipientId,
+        senderId: userId, // ID de l'expéditeur (connecté)
+        recipientId, // ID du destinataire
         content: message,
         read: false,
       };
 
-      // Envoyer le message via socket
-      socket.emit("sendMessage", newMessage);
+      if (socket) {
+        // Vérifie si la connexion WebSocket est active avant d'envoyer
+        socket.emit("sendMessage", newMessage);
+      } else {
+        console.error("WebSocket non connecté.");
+      }
 
-      // Ajouter le message à l'état local
+      // Ajoute le message à l'état local
       setMessages((prevMessages) => [newMessage, ...prevMessages]);
-      setMessage("");  // Réinitialiser le champ du message
+      setMessage(""); // Réinitialise le champ du message
+      setRecipientId(""); // Réinitialise le destinataire sélectionné
+    } else {
+      console.error("Veuillez remplir tous les champs.");
     }
   };
 
   return (
     <div className="mb-4">
-      {/* Sélecteur de destinataire (utilisateur) */}
+      {/* Sélecteur de destinataire */}
       <select
         className="form-control mb-3"
         value={recipientId}
         onChange={(e) => setRecipientId(e.target.value)}
       >
         <option value="">Choisir un destinataire</option>
-        {users.map((user) => (
-          <option key={user._id} value={user._id}>
-            {user.username}
-          </option>
-        ))}
+        {Array.isArray(users) && users.length > 0 ? (
+          users.map((user) => (
+            <option key={user._id} value={user._id}>
+              {user.email}
+            </option>
+          ))
+        ) : (
+          <option disabled>Aucun utilisateur trouvé</option>
+        )}
       </select>
 
+      {/* Champ de texte pour le message */}
       <textarea
         className="form-control"
         rows="3"
@@ -47,6 +58,8 @@ const SendMessage = ({ setMessages, socket, users }) => {
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Écrivez un message..."
       />
+
+      {/* Bouton pour envoyer */}
       <button
         className="btn btn-primary mt-2"
         onClick={sendMessage}

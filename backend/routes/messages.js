@@ -1,66 +1,42 @@
 const express = require("express");
+const Message = require("../models/Message");
 const router = express.Router();
-const Message = require("../models/message");
 
-
-// Récupérer tous les messages
-router.get("/messages", async (req, res) => {
+// Route pour récupérer les messages d'un utilisateur spécifique
+router.get("/:userId", async (req, res) => {
   try {
-    const { receiver } = req.query;
-    if (!receiver) {
-      return res.status(400).json({ message: "Le destinataire est requis." });
-    }
-    
-    const messages = await Message.find({ receiver });
+    const messages = await Message.find({ recipientId: req.params.userId }); // Utilisation de recipientId
     res.json(messages);
-  } catch (error) {
-    res.status(500).json({ message: "Erreur serveur." });
+  } catch (err) {
+    res.status(500).json({ message: "Erreur lors de la récupération des messages", error: err });
   }
 });
 
-
-// Ajouter un nouveau message
+// Route pour envoyer un message
 router.post("/", async (req, res) => {
+  const { senderId, recipientId, content } = req.body;
+
+  if (!senderId || !recipientId || !content) {
+    return res.status(400).json({ message: "Tous les champs doivent être remplis." });
+  }
+
   try {
-    const { sender, content } = req.body;
-    const message = new Message({ sender, content });
-    await message.save();
-    res.status(201).json(message);
-  } catch (error) {
-    res.status(500).json({ error: "Erreur lors de l'ajout du message" });
+    const newMessage = new Message({ senderId, recipientId, content });
+    await newMessage.save();
+    res.status(201).json(newMessage);
+  } catch (err) {
+    res.status(500).json({ message: "Erreur lors de l'envoi du message", error: err });
   }
 });
 
-// Mettre à jour l'état "lu" d'un message
-router.put("/messages/:id/read", async (req, res) => {
+// Route pour marquer un message comme lu
+router.put("/read/:messageId", async (req, res) => {
   try {
-    const message = await Message.findByIdAndUpdate(
-      req.params.id,
-      { read: true },
-      { new: true }
-    );
-
-    if (!message) {
-      return res.status(404).json({ message: "Message non trouvé." });
-    }
-
+    const message = await Message.findByIdAndUpdate(req.params.messageId, { read: true }, { new: true });
     res.json(message);
-  } catch (error) {
-    res.status(500).json({ message: "Erreur serveur." });
+  } catch (err) {
+    res.status(500).json({ message: "Erreur lors de la mise à jour du message", error: err });
   }
 });
-/*
-// Supprimer un message
-router.delete("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const message = await Message.findByIdAndDelete(id);
-    if (!message) return res.status(404).json({ error: "Message introuvable" });
-    res.json({ message: "Message supprimé avec succès" });
-  } catch (error) {
-    res.status(500).json({ error: "Erreur lors de la suppression du message" });
-  }
-});
-*/
 
 module.exports = router;

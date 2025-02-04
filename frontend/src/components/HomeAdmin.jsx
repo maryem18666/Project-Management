@@ -1,5 +1,5 @@
 import React from "react";
-import Dashboard from "./Dashboard";
+
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import StatsDashboard from "./StatsDashboard";
@@ -15,7 +15,7 @@ const DashContent = () => {
         <Navbar />
         <StatsDashboard />
         <TeamWorkload />
-        <Dashboard />
+  
 
       </div>
     </div>
