@@ -27,17 +27,27 @@ import TasksTable from './components/TasksTable';
 import Tasks from './components/tasktotal';
 import UpdateProject from "./components/UpdateProject";
 
-
-const socket = io("http://localhost:3000"); // Remplace par l'URL de ton serveur
-
 const userId = "67913e1f55ead5e532726e9b"; // Remplace par l'ID de l'utilisateur connecté
 
+
+const socket = io("http://localhost:3000", {
+  transports: ["websocket", "polling"], // Permet de gérer plusieurs types de connexion
+  reconnectionAttempts: 5, // Réessayer en cas d'échec
+  reconnectionDelay: 1000, // Attendre 1 seconde entre chaque tentative
+});
+
+socket.on("connect", () => {
+  console.log("✅ Connecté au WebSocket !");
+});
+
+socket.on("connect_error", (error) => {
+  console.error("❌ Erreur de connexion WebSocket :", error);
+});
 
 function App() {
   return (
     <MessageProvider>
       <Router>
-        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Navbar" element={<Navbar />} />
@@ -60,7 +70,6 @@ function App() {
           <Route path="/clients/add" element={<AddClient />} />
           <Route path="/Note" element={<Notes />} />
           <Route path="/messages" element={<Messages socket={socket} userId={userId} />} />
-
           <Route path="/projectsbar" element={<Projectbar />} />
           <Route path="/gamification" element={<Gamification />} />
         </Routes>

@@ -23,6 +23,7 @@ const DashContent = () => {
 };
 
 const Dash = () => {
+  
   return (
       <DashContent />
   );
