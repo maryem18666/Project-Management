@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import API from "../services/api";
 import { useNavigate } from "react-router-dom";
+
 import DocumentUpload from "./DocumentUpload";
 
+import API from "../services/api";
+
 function AddProject({ onAdd }) {
+  console.log("🚀 ~ AddProject ~ onAdd:", onAdd)
   const [form, setForm] = useState({ title: "", description: "", deadline: "" });
   const [tasks, setTasks] = useState([{ title: "", assignedTo: "" }]);
   const [users, setUsers] = useState([]);

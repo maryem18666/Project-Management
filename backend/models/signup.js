@@ -15,7 +15,7 @@ const User = mongoose.model("User", {
   role: {
     type: String,
     required: true,
-    enum: ["adminstrateur", "employee"],
+    enum: ["admin", "user"],
     default: "user",
   },
 });

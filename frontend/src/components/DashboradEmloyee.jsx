@@ -14,12 +14,13 @@ const DashContent = () => {
     <div className="d-flex">
       <Sidebar />
       <div className="flex-grow-1 p-4 bg-light" style={{ paddingTop: "70px" }}>
-        <Navbar />
+        {/* <Navbar />
         <StatsDashboard />
         <Tasks />
         <TeamWorkload />
         <Gamification />
-        <Dashboard />
+        <Dashboard /> */}
+        {/* lena bech isir changement lel dash mt3 el employée  */}
 
       </div>
     </div>
