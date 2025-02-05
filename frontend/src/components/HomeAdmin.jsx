@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import StatsDashboard from "./StatsDashboard";
 import TeamWorkload from "./TeamWorkload";
-
+import Taskadmin from "./Taskadmin";
 
 const DashContent = () => {
 
@@ -15,7 +15,7 @@ const DashContent = () => {
         <Navbar />
         <StatsDashboard />
         <TeamWorkload />
-        
+        <Taskadmin/>
 
       </div>
     </div>

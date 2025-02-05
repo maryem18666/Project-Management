@@ -12,7 +12,7 @@ const TasksTotal = ({ role, userId, handleEdit, handleDelete }) => {
       setLoading(true);
       setError("");
       try {
-        const endpoint = role === "admin" ? "/taskstotal" : `/tasks/${userId}`;
+        const endpoint = role === "admin" ? "/taskstotal" : `/taskstotal/${userId}`;
         const response = await API.get(endpoint);
         setTasks(response.data);
       } catch (err) {
