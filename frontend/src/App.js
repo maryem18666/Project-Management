@@ -5,6 +5,7 @@ import { io } from "socket.io-client";
 import AddClient from "./components/AddClient";
 import AddProject from "./components/AddProject";
 import AddTask from "./components/AddTask";
+import AddTaskAdmin from "./components/AddTaskAdmin";
 import Clients from "./components/Client";
 import Dashboard from "./components/Dashboard";
 import DashboradEmloyee from "./components/DashboradEmloyee";
@@ -24,6 +25,8 @@ import Register from "./components/Register";
 import Settings from "./components/Settings";
 import TasksTable from './components/TasksTable';
 import Tasks from './components/tasktotal';
+import TaskAdmin from "./components/Taskadmin";
+import TaskTableAdmin from './components/TaskTableAdmin';
 import UpdateProject from "./components/UpdateProject";
 import { MessageProvider } from "./context/MessageContext"; 
 
@@ -64,8 +67,11 @@ function App() {
           <Route path="/Settings" element={<Settings />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/AddTask" element={<AddTask />} />
+          <Route path="/AddTaskAdmin" element={<AddTaskAdmin />} />
           <Route path="/taskstotal" element={<Tasks />} />
           <Route path="/taskstable" element={<TasksTable />} />
+          <Route path="/TaskAdmin" element={<TaskAdmin />} />
+          <Route path="/tasktableadmin" element={<TaskTableAdmin />} />
           <Route path="/clients" element={<Clients />} />
           <Route path="/clients/add" element={<AddClient />} />
           <Route path="/Note" element={<Notes />} />

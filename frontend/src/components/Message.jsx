@@ -3,7 +3,7 @@ import axios from "axios";
 import SendMessage from "./SendMessage";
 import MessageList from "./MessageList";
 
-const Messages = ({ socket, userId }) => {
+const Messages = ({ socket, userId, onMarkAsRead }) => {
   const [messages, setMessages] = useState([]);
   const [recipients, setRecipients] = useState([]);
 
@@ -43,7 +43,7 @@ const Messages = ({ socket, userId }) => {
     <div>
       <h2>Messages</h2>
       <SendMessage socket={socket} users={recipients} userId={userId} setMessages={setMessages} />
-      <MessageList messages={messages} users={recipients} />
+      <MessageList messages={messages || []} users={recipients || []} onMarkAsRead={onMarkAsRead}/>
     </div>
   );
 };
