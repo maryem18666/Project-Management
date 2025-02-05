@@ -32,15 +32,21 @@ const MessageItem = ({ message, users, onMarkAsRead }) => {
 const MessageList = ({ messages, users, onMarkAsRead }) => {
   return (
     <div className="message-list-container">
-      <ul className="message-list">
-        {messages.length > 0 ? (
-          messages.map((msg) => (
-            <MessageItem key={msg._id} message={msg} users={users} onMarkAsRead={onMarkAsRead} />
-          ))
-        ) : (
-          <li>Aucun message reçu.</li>
-        )}
-      </ul>
+     <ul className="message-list">
+  {Array.isArray(messages) && messages.length > 0 ? (
+    messages.map((msg, index) => (
+      <MessageItem 
+        key={msg._id || index} // Utiliser msg._id si disponible, sinon l'index
+        message={msg} 
+        users={users} 
+        onMarkAsRead={onMarkAsRead} 
+      />
+    ))
+  ) : (
+    <li>Aucun message reçu.</li>
+  )}
+</ul>
+ 
     </div>
   );
 };
