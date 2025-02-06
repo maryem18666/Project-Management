@@ -2,19 +2,18 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { io } from "socket.io-client";
 
-import { MessageProvider } from "./context/MessageContext"; 
 import AddClient from "./components/AddClient";
 import AddProject from "./components/AddProject";
 import AddTask from "./components/AddTask";
 import AddTaskAdmin from "./components/AddTaskAdmin";
 import Clients from "./components/Client";
 import Dashboard from "./components/Dashboard";
+import DashboradEmloyee from "./components/DashboradEmloyee";
 import Footer from "./components/Footer";
 import Gamification from "./components/Gamification";
 import Header from "./components/Header";
 import Home from "./components/Home";
 import Dash from "./components/HomeAdmin";
-import DashboradEmloyee from "./components/DashboradEmloyee";
 import Login from "./components/Login";
 import Messages from "./components/Message";
 import Navbar from "./components/Navbar";
@@ -29,6 +28,7 @@ import Tasks from './components/tasktotal';
 import TaskAdmin from "./components/Taskadmin";
 import TaskTableAdmin from './components/TaskTableAdmin';
 import UpdateProject from "./components/UpdateProject";
+import { MessageProvider } from "./context/MessageContext"; 
 
 const userId = "67913e1f55ead5e532726e9b"; // Remplace par l'ID de l'utilisateur connecté
 

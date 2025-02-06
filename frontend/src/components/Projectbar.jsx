@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Link, Routes, Route } from "react-router-dom";
 import { FaPlus, FaListAlt } from "react-icons/fa"; // Icônes pour améliorer l'apparence
+import { Link, Routes, Route } from "react-router-dom";
+
 import AddProject from "./AddProject";
 import ProjectList from "./ProjectList";
+
 import "./projectbar.css"; // Assure-toi que le fichier CSS est bien importé
 
 function Projectbar() {
@@ -12,6 +14,9 @@ function Projectbar() {
   const refreshProjects = () => {
     setRefreshKey((prev) => prev + 1); // Augmente refreshKey pour forcer le rechargement
   };
+  const userRole =
+    typeof window !== "undefined" ? localStorage.getItem("userRole") : null;
+    console.log("🚀 ~ Projectbar ~ userRole:", userRole)
 
   return (
     <div className="container-fluid mt-4">
@@ -23,7 +28,9 @@ function Projectbar() {
               <FaListAlt className="display-4 text-primary" />
               <div>
                 <h5 className="card-title">Voir les projets</h5>
-                <p className="card-text">Accédez à la liste complète des projets.</p>
+                <p className="card-text">
+                  Accédez à la liste complète des projets.
+                </p>
                 <Link
                   to="/projects"
                   className="btn btn-custom-info btn-lg w-100"
@@ -58,8 +65,14 @@ function Projectbar() {
 
       {/* Routes pour afficher les projets ou ajouter un projet */}
       <Routes>
-        <Route path="/projects" element={<ProjectList refreshKey={refreshKey} />} />
-        <Route path="/projects/add" element={<AddProject onAdd={refreshProjects} />} />
+        <Route
+          path="/projects"
+          element={<ProjectList refreshKey={refreshKey} />}
+        />
+        <Route
+          path="/projects/add"
+          element={<AddProject onAdd={refreshProjects} />}
+        />
       </Routes>
     </div>
   );

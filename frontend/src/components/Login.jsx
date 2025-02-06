@@ -8,35 +8,71 @@ function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   console.log("form", form);
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await API.post("/login", form);
-      const token = res.data.mytoken; // Assurez-vous que le token est bien dans res.data.mytoken
-
-      // Décoder le token pour obtenir les informations de l'utilisateur
-      const decodedToken = jwtDecode(token); // Utilisez jwtDecode ici
-      console.log("🚀 ~ handleSubmit ~ decodedToken:", decodedToken);
-      const userRole = decodedToken.role; // Récupérer le rôle de l'utilisateur
-      console.log("🚀 ~ handleSubmit ~ userRole:", userRole);
-
-      console.log("Rôle de l'utilisateur:", userRole);
-
-      // Stocker le token dans le localStorage
+      const token = res.data.mytoken; 
+  
+      // Décoder le token
+      const decodedToken = jwtDecode(token);
+      console.log("🚀 ~ handleSubmit ~ decodedToken:", decodedToken)
+      const userRole = decodedToken.role; 
+      console.log("🚀 ~ handleSubmit ~ userRole:", userRole)
+      const userId = decodedToken._id; // Assurez-vous que le token contient l'userId
+      console.log("🚀 ~ handleSubmit ~ userId:", userId)
+  
+  
+      // Stocker le token, le rôle et l'ID utilisateur dans localStorage
       localStorage.setItem("token", token);
-
+      localStorage.setItem("userRole", userRole);
+      localStorage.setItem("userId", userId);
+  
       alert("Connexion réussie !");
       if (userRole === "admin") {
         navigate("/Dash");
-      } else if (userRole === "user") {
+      } else {
         navigate("/DashEmployee");
       }
-      // navigate("/Dash");
     } catch (error) {
       alert("Erreur lors de la connexion");
     }
   };
+  
+
+
+
+
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const res = await API.post("/login", form);
+  //     const token = res.data.mytoken; // Assurez-vous que le token est bien dans res.data.mytoken
+
+  //     // Décoder le token pour obtenir les informations de l'utilisateur
+  //     const decodedToken = jwtDecode(token); // Utilisez jwtDecode ici
+  //     console.log("🚀 ~ handleSubmit ~ decodedToken:", decodedToken);
+  //     const userRole = decodedToken.role; // Récupérer le rôle de l'utilisateur
+  //     console.log("🚀 ~ handleSubmit ~ userRole:", userRole);
+
+  //     console.log("Rôle de l'utilisateur:", userRole);
+    
+  //     // Stocker le token dans le localStorage
+  //     localStorage.setItem("token", token);
+
+  //     alert("Connexion réussie !");
+  //     if (userRole === "admin") {
+  //       navigate("/Dash");
+  //     } else if (userRole === "user") {
+  //       navigate("/DashEmployee");
+  //     }
+  //     // navigate("/Dash");
+  //   } catch (error) {
+  //     alert("Erreur lors de la connexion");
+  //   }
+  // };
   return (
     <div className="container-fluid vh-100 d-flex">
       {/* Image à gauche */}
