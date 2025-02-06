@@ -1,22 +1,38 @@
 import React, { useEffect, useState } from "react";
-import API from "../services/api";
-import TaskTableAdmin from "./TaskTableAdmin";
+
 import TasksTable from "./TasksTable";
+import TaskTableAdmin from "./TaskTableAdmin";
+
+import API from "../services/api";
 
 const TaskAdmin = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const role = localStorage.getItem("userRole");
-  const userId = localStorage.getItem("userId");
+  const [role, setRole] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
+    // Récupérer le rôle et l'ID utilisateur après le montage du composant
+    const storedRole = localStorage.getItem("userRole");
+    console.log("🚀 ~ useEffect ~ storedRole:", storedRole)
+    const storedUserId = localStorage.getItem("userId");
+    console.log("🚀 ~ useEffect ~ storedUserId:", storedUserId)
+
+    setRole(storedRole);
+    setUserId(storedUserId);
+  }, []);
+
+  useEffect(() => {
+    if (!role || !userId) return; // Ne pas exécuter si role ou userId est null
+
     const fetchTasks = async () => {
       setLoading(true);
       setError("");
 
       try {
-        const endpoint = role === "admin" ? "/taskstotal" : `/taskstotal/${userId}`;
+        const endpoint =
+          role === "admin" ? "/taskstotal" : `/taskstotal/${userId}`;
         const response = await API.get(endpoint);
         setTasks(response.data);
       } catch (err) {
@@ -41,7 +57,9 @@ const TaskAdmin = () => {
   return (
     <div className="container mt-4">
       <h2 className="text-center mb-4">
-        {role === "admin" ? "Suivi des tâches des employés" : "Vos tâches assignées"}
+        {role === "admin"
+          ? "Suivi des tâches des employés"
+          : "Vos tâches assignées"}
       </h2>
 
       {loading ? (
