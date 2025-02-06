@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import API from "../services/api";
 import TaskTableAdmin from "./TaskTableAdmin";
+import TasksTable from "./TasksTable";
 
-const TasksTotal = ({ role, userId, handleEdit, handleDelete }) => {
+const TaskAdmin = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const role = localStorage.getItem("userRole");
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchTasks = async () => {
       setLoading(true);
       setError("");
+
       try {
         const endpoint = role === "admin" ? "/taskstotal" : `/taskstotal/${userId}`;
         const response = await API.get(endpoint);
@@ -39,6 +43,7 @@ const TasksTotal = ({ role, userId, handleEdit, handleDelete }) => {
       <h2 className="text-center mb-4">
         {role === "admin" ? "Suivi des tâches des employés" : "Vos tâches assignées"}
       </h2>
+
       {loading ? (
         <div>Chargement...</div>
       ) : error ? (
@@ -47,14 +52,14 @@ const TasksTotal = ({ role, userId, handleEdit, handleDelete }) => {
         Object.entries(groupTasksByUser()).map(([user, userTasks]) => (
           <div key={user} className="mb-4">
             <h3>{user}</h3>
-            <TaskTableAdmin tasks={userTasks} onEdit={handleEdit} onDelete={handleDelete} />
+            <TaskTableAdmin tasks={userTasks} />
           </div>
         ))
       ) : (
-        <TaskTableAdmin tasks={tasks} onEdit={handleEdit} onDelete={handleDelete} />
+        <TasksTable tasks={tasks} />
       )}
     </div>
   );
 };
 
-export default TasksTotal;
+export default TaskAdmin;

@@ -23,16 +23,7 @@ const Sidebar = ({ role }) => {
           </Link>
         </li>
         
-        {role === "user" && (
-          
-        <li className="nav-item mb-3">
-          <Link to="/AddTask" className="nav-link text-white d-flex align-items-center">
-            <FaTasks className="me-2" />
-            Taches
-          </Link>
-        </li>
         
-        )}
 
         {role === "admin" && (
           <>
