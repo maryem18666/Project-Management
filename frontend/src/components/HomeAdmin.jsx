@@ -10,7 +10,7 @@ const DashContent = () => {
 
   return (
     <div className="d-flex">
-      <Sidebar />
+      <Sidebar role="admin"/>
       <div className="flex-grow-1 p-4 bg-light" style={{ paddingTop: "70px" }}>
         <Navbar />
         <StatsDashboard />

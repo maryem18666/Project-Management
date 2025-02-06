@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../services/api";
-import TasksTable from "./TasksTable";
+import TaskTableAdmin from "./TaskTableAdmin";
 
 const TasksTotal = () => {
   const [tasks, setTasks] = useState([]); // Liste des tâches
@@ -168,7 +168,7 @@ const TasksTotal = () => {
       ) : error ? (
         <div className="alert alert-danger">{error}</div>
       ) : (
-        <TasksTable
+        <TaskTableAdmin
           tasks={tasks}
           onEdit={handleEditTask}
           onDelete={handleDeleteTask}
