@@ -54,7 +54,7 @@ const TasksTotal = () => {
     <div className="container mt-4">
       <h2 className="text-center mb-4">Liste Complète des Tâches</h2>
 
-      {/* Boutons pour filtrer les tâches */}
+      
       <div className="mb-4 text-center">
         <button
           className={`btn mx-2 ${
@@ -162,7 +162,7 @@ const TasksTotal = () => {
   </div>
 )}
 
-      {/* Affichage des tâches */}
+      
       {loading ? (
         <div>Chargement des tâches...</div>
       ) : error ? (
