@@ -20,10 +20,11 @@ const TasksTable = ({ tasks, onEdit, onDelete }) => {
               tasks.map((task) => (
                 <tr key={task._id}>
                   <td>
-                    {task.assignedTo
-                      ? task.assignedTo.name || task.assignedTo.email
-                      : "Non assigné"}
-                  </td>
+  {typeof task.assignedTo === "object"
+    ? task.assignedTo.name || task.assignedTo.email
+    : "Non assigné"}
+</td>
+
                   <td>{task.title}</td>
                   <td>{new Date(task.deadline).toLocaleDateString()}</td>
                   <td>

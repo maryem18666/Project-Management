@@ -24,9 +24,10 @@ function AddTaskAdmin({ onTaskAdded }) { // onTaskAdded est une fonction pour ra
 
     const newTask = {
       ...form,
-      assignedTo,
-      status: "in-progress", // Statut par défaut
+      assignedTo: assignedTo || null, // Envoi null si non assigné
+      status: "in-progress",
     };
+    
 
     try {
       await API.post("/taskstotal", newTask);

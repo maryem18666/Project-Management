@@ -49,7 +49,7 @@ const WorkloadChart = () => {
     };
   
     fetchData();
-  }, [API]); 
+  }, []); 
   
   if (loading) {
     return <p>Chargement des tâches...</p>;

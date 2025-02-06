@@ -7,7 +7,8 @@ const TaskAdmin = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const role = localStorage.getItem("userRole");
+  //const role = localStorage.getItem("userRole");
+  const role="admin";
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
@@ -16,7 +17,7 @@ const TaskAdmin = () => {
       setError("");
 
       try {
-        const endpoint = role === "admin" ? "/taskstotal" : `/taskstotal/${userId}`;
+        const endpoint = role === "admin" ? "/taskstotal" : `/task/${userId}`;
         const response = await API.get(endpoint);
         setTasks(response.data);
       } catch (err) {
@@ -31,7 +32,11 @@ const TaskAdmin = () => {
 
   const groupTasksByUser = () => {
     return tasks.reduce((acc, task) => {
-      const user = task.assignedTo?.email || "Non assigné";
+      const user =
+  typeof task.assignedTo === "object"
+    ? task.assignedTo.email || "Non assigné"
+    : "Non assigné";
+
       if (!acc[user]) acc[user] = [];
       acc[user].push(task);
       return acc;
