@@ -47,10 +47,11 @@ const TaskAdmin = () => {
 
   const groupTasksByUser = () => {
     return tasks.reduce((acc, task) => {
-      const user =
-  typeof task.assignedTo === "object"
-    ? task.assignedTo.email || "Non assigné"
-    : "Non assigné";
+      if (!task || !task.assignedTo) return acc; // Vérification pour éviter les erreurs
+
+      const user = typeof task.assignedTo === "object" && task.assignedTo.email 
+        ? task.assignedTo.email 
+        : "Non assigné";
 
       if (!acc[user]) acc[user] = [];
       acc[user].push(task);
