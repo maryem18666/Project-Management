@@ -5,7 +5,7 @@ const router = express.Router();
 // Route pour récupérer les messages d'un utilisateur spécifique
 router.get("/:userId", async (req, res) => {
   try {
-    const messages = await Message.find({ recipientId: req.params.userId }); // Utilisation de recipientId
+    const messages = await Message.find({ recipientId: req.params.userId }).sort({ createdAt: -1 }); // Récupérer les messages par ordre chronologique inversé
     res.json(messages);
   } catch (err) {
     res.status(500).json({ message: "Erreur lors de la récupération des messages", error: err });
@@ -33,6 +33,9 @@ router.post("/", async (req, res) => {
 router.put("/read/:messageId", async (req, res) => {
   try {
     const message = await Message.findByIdAndUpdate(req.params.messageId, { read: true }, { new: true });
+    if (!message) {
+      return res.status(404).json({ message: "Message non trouvé" });
+    }
     res.json(message);
   } catch (err) {
     res.status(500).json({ message: "Erreur lors de la mise à jour du message", error: err });

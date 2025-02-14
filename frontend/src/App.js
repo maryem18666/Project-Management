@@ -7,7 +7,6 @@ import AddProject from "./components/AddProject";
 import AddTask from "./components/AddTask";
 import AddTaskAdmin from "./components/AddTaskAdmin";
 import Clients from "./components/Client";
-import Dashboard from "./components/Dashboard";
 import DashboradEmloyee from "./components/DashboradEmloyee";
 import Footer from "./components/Footer";
 import Gamification from "./components/Gamification";
@@ -60,7 +59,6 @@ function App() {
           <Route path="/Dash" element={<Dash />} />
           <Route path="/DashEmployee" element={<DashboradEmloyee />} />
           <Route path="/Header" element={<Header />} />
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/projects" element={<ProjectList />} />
           <Route path="/projects/add" element={<AddProject />} />
           <Route path="/projects/:id/edit" element={<UpdateProject />} />
@@ -74,7 +72,7 @@ function App() {
           <Route path="/tasktableadmin" element={<TaskTableAdmin />} />
           <Route path="/clients" element={<Clients />} />
           <Route path="/clients/add" element={<AddClient />} />
-          <Route path="/Note" element={<Notes />} />
+          <Route path="/notes" element={<Notes />} />
           <Route path="/messages" element={<Messages socket={socket} userId={userId} />} />
           <Route path="/projectsbar" element={<Projectbar />} />
           <Route path="/gamification" element={<Gamification />} />

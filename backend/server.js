@@ -8,6 +8,7 @@ const projectRoutes = require("./routes/projectRoutes");
 const clientRoutes = require("./routes/clientRoutes");
 const messagesRoutes = require("./routes/messages");
 const taskRoutes = require("./routes/taskRoutes");
+const noteRoutes = require("./routes/notes");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 /*const app = express();*/
@@ -79,6 +80,7 @@ app.use("/projects", projectRoutes);
 app.use("/clients", clientRoutes);
 app.use("/messages", messagesRoutes);
 app.use("/taskstotal", taskRoutes);
+app.use("/notes", noteRoutes);
 
 app.post("/register", async (req, res) => {
   try {
@@ -187,6 +189,39 @@ app.get("/getall", async (req, res) => {
 app.put("/update", (req, res) => {
   console.log("update work");
 });
+
+// Route pour mettre à jour les paramètres utilisateur
+app.post('/updateSettings', async (req, res) => {
+  const { email, name, password, role } = req.body;
+
+  try {
+      // Rechercher l'utilisateur par email
+      const user = await User.findOne({ email });
+      if (!user) {
+          return res.status(404).json({ message: 'Utilisateur non trouvé' });
+      }
+
+      // Mettre à jour les informations
+      if (name) user.name = name;
+      if (role) user.role = role;
+
+      // Si un mot de passe est fourni, hacher le nouveau mot de passe
+      if (password) {
+          const salt = await bcrypt.genSalt(10);
+          user.password = await bcrypt.hash(password, salt);
+      }
+
+      // Sauvegarder les modifications
+      await user.save();
+
+      res.status(200).json({ message: 'Paramètres mis à jour avec succès', user });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Erreur lors de la mise à jour des paramètres' });
+  }
+});
+
+
 
 app.listen(3000, () => {
   console.log("server work");

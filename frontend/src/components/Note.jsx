@@ -1,73 +1,74 @@
 import React, { useState, useEffect } from "react";
 import API from "../services/api";
-import { FaPlus, FaTrashAlt } from "react-icons/fa"; // Ajouter des icônes
+import { FaPlus, FaTrashAlt } from "react-icons/fa";
 
 const Notes = () => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [alert, setAlert] = useState(""); // État pour les alertes
+  const [alert, setAlert] = useState({ message: "", type: "" });
   const notesPerPage = 5;
 
+  // Récupérer les notes depuis le backend
   useEffect(() => {
     const fetchNotes = async () => {
       try {
         const response = await API.get("/notes");
-        // Vérifier la réponse avant de l'utiliser
-        console.log("Réponse de l'API:", response);
         if (response && response.data) {
           setNotes(response.data);
         } else {
-          setAlert("Pas de notes trouvées.");
+          setAlert({ message: "Pas de notes trouvées.", type: "warning" });
         }
       } catch (error) {
-        // Afficher plus d'informations d'erreur
-        if (error.response) {
-          console.error("Erreur de la réponse API :", error.response);
-          setAlert(`Erreur lors du chargement des notes : ${error.response.data.message || error.response.statusText}`);
-        } else {
-          console.error("Erreur lors de la requête API :", error);
-          setAlert("Erreur inconnue lors du chargement des notes.");
-        }
+        setAlert({
+          message: "Erreur lors du chargement des notes.",
+          type: "danger",
+        });
+        console.error("Erreur lors de la récupération des notes :", error);
       }
     };
-  
+
     fetchNotes();
   }, []);
-  
-  
 
+  // Ajouter une nouvelle note
   const handleAddNote = async () => {
-    if (newNote.trim() === "") return;
+    if (newNote.trim() === "") {
+      setAlert({ message: "Le contenu de la note ne peut pas être vide.", type: "warning" });
+      return;
+    }
     try {
       const response = await API.post("/notes", { content: newNote });
       setNotes([...notes, response.data]);
       setNewNote("");
       setAlert({ message: "Note ajoutée avec succès !", type: "success" });
-      setTimeout(() => setAlert(""), 3000); // Masquer l'alerte après 3 secondes
+      setTimeout(() => setAlert({ message: "", type: "" }), 3000);
     } catch (error) {
       setAlert({ message: "Erreur lors de l'ajout de la note.", type: "danger" });
       console.error("Erreur lors de l'ajout de la note :", error);
     }
   };
 
+  // Supprimer une note
   const handleDeleteNote = async (noteId) => {
     try {
       await API.delete(`/notes/${noteId}`);
-      setNotes(notes.filter((note) => note.id !== noteId));
+      setNotes(notes.filter((note) => note._id !== noteId)); // Utiliser _id au lieu de id
       setAlert({ message: "Note supprimée avec succès !", type: "success" });
-      setTimeout(() => setAlert(""), 3000); // Masquer l'alerte après 3 secondes
+      setTimeout(() => setAlert({ message: "", type: "" }), 3000);
     } catch (error) {
       setAlert({ message: "Erreur lors de la suppression de la note.", type: "danger" });
       console.error("Erreur lors de la suppression de la note :", error);
     }
   };
 
+  // Filtrer les notes en fonction de la recherche
   const filteredNotes = notes.filter((note) =>
     note.content.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Pagination
   const indexOfLastNote = currentPage * notesPerPage;
   const indexOfFirstNote = indexOfLastNote - notesPerPage;
   const currentNotes = filteredNotes.slice(indexOfFirstNote, indexOfLastNote);
@@ -75,11 +76,11 @@ const Notes = () => {
   return (
     <div className="container mt-4">
       <h2 className="text-center mb-4">Notes</h2>
-      
-      {alert && (
+
+      {alert.message && (
         <div className={`alert alert-${alert.type}`}>{alert.message}</div>
       )}
-      
+
       <div className="mb-4">
         <input
           type="text"
@@ -101,26 +102,26 @@ const Notes = () => {
           </button>
         </div>
       </div>
-      
+
       {currentNotes.length === 0 && <p>Aucune note à afficher.</p>}
-      
+
       <ul className="list-group">
         {currentNotes.map((note) => (
           <li
-            key={note.id}
+            key={note._id} // Utiliser _id au lieu de id
             className="list-group-item d-flex justify-content-between align-items-center"
           >
             {note.content}
             <button
               className="btn btn-danger btn-sm"
-              onClick={() => handleDeleteNote(note.id)}
+              onClick={() => handleDeleteNote(note._id)} // Utiliser _id au lieu de id
             >
               <FaTrashAlt />
             </button>
           </li>
         ))}
       </ul>
-      
+
       <div className="d-flex justify-content-between align-items-center mt-3">
         <button
           className="btn btn-secondary"

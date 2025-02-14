@@ -23,16 +23,6 @@ const Sidebar = ({ role }) => {
           </Link>
         </li>
         
-        {role === "user" && (
-          
-        <li className="nav-item mb-3">
-          <Link to="/AddTask" className="nav-link text-white d-flex align-items-center">
-            <FaTasks className="me-2" />
-            Taches
-          </Link>
-        </li>
-        
-        )}
 
         {role === "admin" && (
           <>
@@ -46,7 +36,7 @@ const Sidebar = ({ role }) => {
         )}
 
         <li className="nav-item mb-3">
-          <Link to="/Note" className="nav-link text-white d-flex align-items-center">
+          <Link to="/notes" className="nav-link text-white d-flex align-items-center">
             <FaStickyNote className="me-2" />
             Mes Notes
           </Link>

@@ -15,7 +15,6 @@ function Register() {
     e.preventDefault();
     try {
       await API.post("/register", form);
-      alert("Inscription réussie !");
       navigate("/login");
     } catch (error) {
       

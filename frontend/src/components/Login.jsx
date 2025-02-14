@@ -28,7 +28,6 @@ function Login() {
       localStorage.setItem("userRole", userRole);
       localStorage.setItem("userId", userId);
   
-      alert("Connexion réussie !");
       if (userRole === "admin") {
         navigate("/Dash");
       } else {

@@ -16,10 +16,46 @@ const Settings = () => {
     });
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    alert("Paramètres sauvegardés !");
-    console.log("Paramètres mis à jour :", form);
+
+    // Validation des champs (par exemple, email et mot de passe)
+    if (!form.email || !form.username) {
+      alert("Le nom d'utilisateur et l'email sont obligatoires.");
+      return;
+    }
+
+    if (form.password && form.password.length < 6) {
+      alert("Le mot de passe doit comporter au moins 6 caractères.");
+      return;
+    }
+
+    try {
+      // Simuler l'appel à une API pour changer les paramètres
+      const response = await fetch('http://localhost:3000/updateSettings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: form.email,
+          name: form.username,
+          password: form.password,
+          role: form.role, // Ajouter cette partie si nécessaire
+        }),
+      });
+
+      if (response.ok) {
+        alert("Paramètres sauvegardés !");
+        console.log("Paramètres mis à jour :", form);
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Échec de la mise à jour des paramètres");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Erreur lors de la mise à jour des paramètres");
+    }
   };
 
   return (

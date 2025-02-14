@@ -24,7 +24,6 @@ const SendMessage = ({ setMessages, socket, users, userId }) => {
       // Ajoute le message à l'état local
       setMessages((prevMessages) => [newMessage, ...prevMessages]);
       setMessage(""); // Réinitialise le champ du message
-      
     } else {
       console.error("Veuillez remplir tous les champs.");
     }
@@ -60,10 +59,7 @@ const SendMessage = ({ setMessages, socket, users, userId }) => {
       />
 
       {/* Bouton pour envoyer */}
-      <button
-        className="btn btn-primary mt-2"
-        onClick={sendMessage}
-      >
+      <button className="btn btn-primary mt-2" onClick={sendMessage}>
         Envoyer
       </button>
     </div>
